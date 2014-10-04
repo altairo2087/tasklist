@@ -13,7 +13,7 @@ myApp.controller('TaskList', function($scope) {
     status2:"statusName2",
     status3:"statusName3",
     status4:"statusName4"
-  }
+  };
 
   // статус по умолчанию для новых заданий
   $scope.defaultStatus = "status1";
@@ -63,14 +63,14 @@ myApp.controller('TaskList', function($scope) {
     $scope.allTasks[newId] = {
       name:$scope.title,
       status:$scope.defaultStatus
-    }
+    };
     $scope.tasksInStatus[$scope.defaultStatus].push(newId);
     $scope.statusSelect[newId] = $scope.statusArr[$scope.defaultStatus];
     $scope.title = "";
     // сохранение в localstorage
     if ($scope.isLocalStorage)
       $scope.saveToStorage($scope.allTasks);
-  }
+  };
 
   /**
    * Инициализация контроллера
@@ -96,7 +96,7 @@ myApp.controller('TaskList', function($scope) {
         $scope.statusSelect[key] = $scope.statusArr[$scope.allTasks[key].status];
       }
     }
-  }
+  };
 
   $scope.init();
 
@@ -139,7 +139,7 @@ myApp.controller('TaskList', function($scope) {
  * директива перетаскиваемого объекта
  */
 myApp.directive('draggable', function() {
-  return function($scope, element) {
+  return function(scope, element) {
 
     var el = element[0];
 
