@@ -73,6 +73,26 @@ myApp.controller('TaskList', function($scope) {
   };
 
   /**
+   * удаление задания
+   */
+  $scope.deleteTask = function(taskId) {
+
+    var status = $scope.allTasks[taskId] && $scope.allTasks[taskId].status;
+    for (var key in $scope.tasksInStatus[status]) {
+      if ($scope.tasksInStatus[status][key]==taskId) {
+        $scope.tasksInStatus[status].splice(key,1);
+        break;
+      }
+    }
+
+    $scope.allTasks[taskId] && delete $scope.allTasks[taskId];
+    $scope.statusSelect[taskId] && delete $scope.statusSelect[taskId];
+    // сохранение в localstorage
+    if ($scope.isLocalStorage)
+      $scope.saveToStorage($scope.allTasks);
+  };
+
+  /**
    * Инициализация контроллера
    */
   $scope.init = function() {

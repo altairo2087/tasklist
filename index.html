@@ -33,6 +33,13 @@
     .task:hover {
       border: 1px solid #269abc;
     }
+    .deletetask {
+      color: #d9534f;
+      white-space: nowrap;
+    }
+    .deletetask:hover {
+      color: red;
+    }
     /* flex не сработает в ie<10 */
     .row-eq-height {
       display: -webkit-box;
@@ -55,10 +62,11 @@
     <div class="task bg-success" ng-repeat="taskId in tasksInStatus[statusId]" draggable data-taskid="{{ taskId }}">
       <h5>Задание: {{ allTasks[taskId].name }}</h5>
       <select class="form-control"
-          ng-model="statusSelect[taskId]"
-          ng-options="optVal for (optKey,optVal) in statusArr"
-          ng-change="changeStatus(taskId,statusSelect[taskId])">
+              ng-model="statusSelect[taskId]"
+              ng-options="optVal for (optKey,optVal) in statusArr"
+              ng-change="changeStatus(taskId,statusSelect[taskId])">
       </select>
+      <div class="deletetask text-right" ng-click="deleteTask(taskId)">удалить</div>
     </div>
   </div>
 </div>
