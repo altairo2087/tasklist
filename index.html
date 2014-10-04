@@ -10,13 +10,6 @@
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/bootstrap-theme.min.css" rel="stylesheet">
 
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
-
   <style>
     body {
       padding: 20px;
@@ -27,29 +20,41 @@
     #tasklist>div {
       min-height: 150px;
       padding: 10px;
+      border-right: 1px dashed #cccccc;
+    }
+    #tasklist>div:first-child {
+      border-left: 1px dashed #cccccc;
     }
     .task {
-      background-color: #D8DC85;
       padding: 3px;
+      cursor: pointer;
+      border: 1px solid linen;
     }
-    .over {
-      background-color: #d0e9c6;
+    .task:hover {
+      border: 1px solid #269abc;
+    }
+    /* flex не сработает в ie<10 */
+    .row-eq-height {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display:         flex;
     }
   </style>
 </head>
-<body  ng-controller="TaskList">
+<body ng-controller="TaskList">
 <div class="row">
-  <div id="addTask" class="col-md-12">
+  <div id="addTask" class="col-md-4">
     <input type="text" placeholder="название задания" ng-model="title">
     <button type="button" class="btn btn-primary btn-sm" ng-click="addTask()">Добавить</button>
   </div>
 </div>
-<div id="tasklist" class="row">
-  <div id="{{ statusId }}" class="col-md-3 table-bordered" ng-repeat="(statusId, statusName) in statusArr" droppable>
+<div id="tasklist" class="row panel row-eq-height">
+  <div id="{{ statusId }}" class="col-md-3" ng-repeat="(statusId, statusName) in statusArr" droppable>
     <h4 class="text-center">{{ statusName }}</h4>
-    <div class="task table-bordered" ng-repeat="taskId in tasksInStatus[statusId]" draggable data-taskid="{{ taskId }}">
+    <div class="task bg-success" ng-repeat="taskId in tasksInStatus[statusId]" draggable data-taskid="{{ taskId }}">
       <h5>Задание: {{ allTasks[taskId].name }}</h5>
-      <select
+      <select class="form-control"
           ng-model="statusSelect[taskId]"
           ng-options="optVal for (optKey,optVal) in statusArr"
           ng-change="changeStatus(taskId,statusSelect[taskId])">
@@ -59,10 +64,11 @@
 </div>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="js/jquery.min.js"></script>
+<!--script src="js/jquery.min.js"></script-->
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="js/bootstrap.min.js"></script>
+<!--script src="js/bootstrap.min.js"></script-->
 <script src="js/angular.min.js"></script>
+<!-- Angular module myApp -->
 <script src="js/myApp.js"></script>
 </body>
 </html>

@@ -21,7 +21,15 @@ myApp.controller('TaskList', function($scope) {
   /**
    * коллекция всех заданий
    */
-  $scope.allTasks = {}
+  $scope.allTasks = {};
+
+  // поддерживается ли localstorage
+  $scope.isLocalStorage = typeof(Storage) !== "undefined";
+
+  // сохранение всех заданий в localstorage
+  $scope.saveToStorage = function (tasks) {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }
 
   /**
    * Здесь связываем задания в статусах
@@ -37,7 +45,7 @@ myApp.controller('TaskList', function($scope) {
    */
   $scope.statusSelect = {};
 
-  // модель, названия для новых заданий
+  // модель, название для новых заданий
   $scope.title = "";
 
   /**
@@ -59,12 +67,18 @@ myApp.controller('TaskList', function($scope) {
     $scope.tasksInStatus[$scope.defaultStatus].push(newId);
     $scope.statusSelect[newId] = $scope.statusArr[$scope.defaultStatus];
     $scope.title = "";
+    // сохранение в localstorage
+    if ($scope.isLocalStorage)
+      $scope.saveToStorage($scope.allTasks);
   }
 
   /**
    * Инициализация контроллера
    */
   $scope.init = function() {
+
+    if ($scope.isLocalStorage && localStorage.getItem("tasks"))
+      $scope.allTasks = JSON.parse(localStorage.getItem("tasks"));
 
     // инициализируем массив статусов для связи с заданиями
     for (var key in $scope.statusArr) {
@@ -110,12 +124,15 @@ myApp.controller('TaskList', function($scope) {
         break;
       }
     }
+    // сохранение в localstorage
+    if ($scope.isLocalStorage)
+      $scope.saveToStorage($scope.allTasks);
   }
 });
 
 /**
  * drug'n'drop
- * здесь получился нативный js от html5, может не работать в ie
+ * здесь получился нативный js от html5, не работает в ie<10
  */
 
 /**
@@ -131,10 +148,12 @@ myApp.directive('draggable', function() {
     el.addEventListener(
       'dragstart',
       function(e) {
+
+        var taskId = el.dataset && el.dataset.taskid || el.getAttribute('data-taskid');
         e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('Text', this.id);
-        e.dataTransfer.setData('taskid', el.dataset.taskid);
+        e.dataTransfer.setData('text', taskId);
         this.classList.add('drag');
+
         return false;
       },
       false
@@ -168,8 +187,9 @@ myApp.directive('droppable', function() {
         function(e) {
           e.dataTransfer.dropEffect = 'move';
 
-          if (e.preventDefault) e.preventDefault();
-          this.classList.add('over');
+          if (e.preventDefault)
+            e.preventDefault();
+          this.classList.add('bg-warning');
           return false;
         },
         false
@@ -178,7 +198,7 @@ myApp.directive('droppable', function() {
       el.addEventListener(
         'dragenter',
         function(e) {
-          this.classList.add('over');
+          this.classList.add('bg-warning');
           return false;
         },
         false
@@ -187,7 +207,7 @@ myApp.directive('droppable', function() {
       el.addEventListener(
         'dragleave',
         function(e) {
-          this.classList.remove('over');
+          this.classList.remove('bg-warning');
           return false;
         },
         false
@@ -200,9 +220,11 @@ myApp.directive('droppable', function() {
           if (e.stopPropagation)
             e.stopPropagation();
 
-          this.classList.remove('over');
-          $scope.$parent.changeStatus(e.dataTransfer.getData("taskid"), $scope.$parent.statusArr[el.id]);
+          this.classList.remove('bg-warning');
+          $scope.$parent.changeStatus(e.dataTransfer.getData("text"), $scope.$parent.statusArr[el.id]);
           $scope.$apply('drop()');
+
+          e.preventDefault();
 
           return false;
         },
