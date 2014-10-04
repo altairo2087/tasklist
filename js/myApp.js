@@ -55,6 +55,7 @@ myApp.controller('TaskList', function($scope) {
     // придется вручную рассчитать айди нового задания
     var newId = 0;
     for(var key in $scope.allTasks) {
+      key = parseInt(key);
       if (key>newId)
         newId = key;
     }

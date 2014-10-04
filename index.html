@@ -39,6 +39,7 @@
     }
     .deletetask:hover {
       color: red;
+      text-decoration: underline;
     }
     /* flex не сработает в ie<10 */
     .row-eq-height {
@@ -66,7 +67,9 @@
               ng-options="optVal for (optKey,optVal) in statusArr"
               ng-change="changeStatus(taskId,statusSelect[taskId])">
       </select>
-      <div class="deletetask text-right" ng-click="deleteTask(taskId)">удалить</div>
+      <div class="text-right">
+        <span class="deletetask" ng-click="deleteTask(taskId)">удалить</span>
+      </div>
     </div>
   </div>
 </div>
