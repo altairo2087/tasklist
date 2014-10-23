@@ -17,12 +17,12 @@
     body>div {
       padding: 10px;
     }
-    #tasklist>div {
+    .status-wrapper {
       min-height: 150px;
       padding: 10px;
       border-right: 1px dashed #cccccc;
     }
-    #tasklist>div:first-child {
+    .status-wrapper:first-child {
       border-left: 1px dashed #cccccc;
     }
     .task {
@@ -58,7 +58,7 @@
   </div>
 </div>
 <div id="tasklist" class="row panel row-eq-height">
-  <div id="{{ statusId }}" class="col-md-3" ng-repeat="(statusId, statusName) in statusArr" droppable>
+  <div id="{{ statusId }}" class="col-md-3 status-wrapper" ng-repeat="(statusId, statusName) in statusArr" droppable>
     <h4 class="text-center">{{ statusName }}</h4>
     <div class="task bg-success" ng-repeat="taskId in tasksInStatus[statusId]" draggable data-taskid="{{ taskId }}">
       <h5>Задание: {{ allTasks[taskId].name }}</h5>
