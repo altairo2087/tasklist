@@ -33,11 +33,11 @@
     .task:hover {
       border: 1px solid #269abc;
     }
-    .deletetask {
+    .delete-task {
       color: #d9534f;
       white-space: nowrap;
     }
-    .deletetask:hover {
+    .delete-task:hover {
       color: red;
       text-decoration: underline;
     }
@@ -68,7 +68,7 @@
               ng-change="changeStatus(taskId,statusSelect[taskId])">
       </select>
       <div class="text-right">
-        <span class="deletetask" ng-click="deleteTask(taskId)">удалить</span>
+        <span class="delete-task" ng-click="deleteTask(taskId)">удалить</span>
       </div>
     </div>
   </div>
